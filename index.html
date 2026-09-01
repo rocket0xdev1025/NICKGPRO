@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NICK GPRO | $NICKGPRO</title>
+  <meta name="description" content="NICK GPRO brings legendary camera energy, wild memes, and nonstop action to Solana!" />
+  <meta property="og:title" content="NICK GPRO | $NICKGPRO" />
+  <meta property="og:description" content="NICK GPRO brings legendary camera energy, wild memes, and nonstop action to Solana!" />
+  <meta property="og:image" content="banner.jpg" />
+  <meta name="theme-color" content="#050507" />
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gpro: {
+              mag: "#FF2EC4",
+              cyan: "#00C8FF",
+              yel: "#FFE500",
+              lime: "#3DFF5C",
+              rec: "#FF2A2A",
+              blu: "#3366FF",
+              org: "#FF7A00",
+              ink: "#050507",
+              panel: "#0C0C10",
+            },
+          },
+          fontFamily: {
+            display: ["Bebas Neue", "sans-serif"],
+            body: ["Rajdhani", "sans-serif"],
+            hud: ["Share Tech Mono", "monospace"],
+          },
+          boxShadow: {
+            rec: "0 0 24px rgba(255,42,42,0.55)",
+            cyan: "0 0 28px rgba(0,200,255,0.45)",
+            mag: "0 0 28px rgba(255,46,196,0.45)",
+            yel: "0 0 22px rgba(255,229,0,0.35)",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --mag: #ff2ec4;
+      --cyan: #00c8ff;
+      --yel: #ffe500;
+      --lime: #3dff5c;
+      --rec: #ff2a2a;
+      --blu: #3366ff;
+      --org: #ff7a00;
+    }
+
+    html, body {
+      background: #050507;
+    }
+
+    body {
+      font-family: "Rajdhani", sans-serif;
+      color: #f4f7fb;
+      overflow-x: hidden;
+      background-image:
+        linear-gradient(180deg, rgba(5,5,7,0.72) 0%, rgba(5,5,7,0.88) 40%, rgba(5,5,7,0.94) 100%),
+        url("bg-texture.jpg"),
+        url("bg-cam.jpg");
+      background-size: auto, 420px, cover;
+      background-position: center, center, center;
+      background-attachment: fixed, scroll, fixed;
+    }
+
+    .font-display { letter-spacing: 0.04em; }
+
+    .hud-corner {
+      position: fixed;
+      width: 52px;
+      height: 52px;
+      border-style: solid;
+      border-color: var(--cyan);
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0.85;
+      filter: drop-shadow(0 0 8px rgba(0,200,255,0.55));
+    }
+    .hud-tl { top: 10px; left: 10px; border-width: 3px 0 0 3px; }
+    .hud-tr { top: 10px; right: 10px; border-width: 3px 3px 0 0; }
+    .hud-bl { bottom: 10px; left: 10px; border-width: 0 0 3px 3px; }
+    .hud-br { bottom: 10px; right: 10px; border-width: 0 3px 3px 0; }
+
+    .scanlines {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.015) 0px,
+        rgba(255,255,255,0.015) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      mix-blend-mode: overlay;
+    }
+
+    .vignette {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: radial-gradient(ellipse at center, transparent 48%, rgba(0,0,0,0.62) 100%);
+    }
+
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 45;
+      opacity: 0.09;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .rec-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--rec);
+      box-shadow: 0 0 12px var(--rec);
+      animation: recPulse 1.1s ease-in-out infinite;
+    }
+
+    @keyframes recPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.72); }
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      46% { opacity: 1; }
+      47% { opacity: 0.72; }
+      48% { opacity: 1; }
+      97% { opacity: 0.85; }
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes shutter {
+      0% { transform: scaleY(1); }
+      40% { transform: scaleY(0); }
+      70% { transform: scaleY(0); }
+      100% { transform: scaleY(0); }
+    }
+
+    .spin-slow { animation: spinSlow 14s linear infinite; }
+    .marquee-track { animation: marquee 28s linear infinite; }
+    .flicker { animation: flicker 4.5s infinite; }
+    .floaty { animation: floaty 5s ease-in-out infinite; }
+
+    .ring-spin {
+      background: conic-gradient(
+        from 0deg,
+        #ff2ec4,
+        #00c8ff,
+        #ffe500,
+        #3dff5c,
+        #ff2a2a,
+        #3366ff,
+        #ff7a00,
+        #ff2ec4
+      );
+      animation: spinSlow 8s linear infinite;
+    }
+
+    .lcd-panel {
+      background:
+        linear-gradient(180deg, rgba(18,18,24,0.82) 0%, rgba(8,8,12,0.9) 100%);
+      border: 1px solid rgba(0,200,255,0.22);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        0 20px 60px rgba(0,0,0,0.45),
+        0 0 40px rgba(0,200,255,0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .glass-nav {
+      background: rgba(8,8,12,0.72);
+      border: 1px solid rgba(0,200,255,0.18);
+      backdrop-filter: blur(16px);
+    }
+
+    .title-glow {
+      text-shadow:
+        0 0 18px rgba(0,200,255,0.35),
+        0 0 42px rgba(255,46,196,0.25);
+    }
+
+    .gpro-gradient {
+      background: linear-gradient(90deg, #ff2ec4 0%, #00c8ff 28%, #ffe500 52%, #3dff5c 72%, #ff7a00 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .shutter-btn {
+      background: radial-gradient(circle at 30% 30%, #ff5a5a, #d10d0d 58%, #7a0000);
+      box-shadow:
+        0 0 0 6px #1a1a1e,
+        0 0 0 8px #ff2a2a,
+        0 10px 30px rgba(255,42,42,0.45);
+    }
+    .shutter-btn:hover {
+      box-shadow:
+        0 0 0 6px #1a1a1e,
+        0 0 0 10px #ff6a6a,
+        0 12px 36px rgba(255,42,42,0.7);
+      transform: scale(1.04);
+    }
+
+    .chart-btn {
+      background: linear-gradient(180deg, #1c1c22, #0c0c10);
+      box-shadow:
+        0 0 0 6px #1a1a1e,
+        0 0 0 8px #00c8ff,
+        0 10px 30px rgba(0,200,255,0.28);
+    }
+    .chart-btn:hover {
+      box-shadow:
+        0 0 0 6px #1a1a1e,
+        0 0 0 10px #5adcff,
+        0 12px 36px rgba(0,200,255,0.5);
+      transform: scale(1.04);
+    }
+
+    .step-card:hover {
+      border-color: rgba(0,200,255,0.55);
+      transform: translateY(-4px);
+    }
+
+    .ca-chip {
+      background: rgba(0,0,0,0.55);
+      border: 1px dashed rgba(255,229,0,0.45);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: revealUp 0.8s ease forwards;
+    }
+    @keyframes revealUp {
+      to { opacity: 1; transform: none; }
+    }
+
+    .shutter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: #000;
+      transform-origin: center;
+      animation: shutter 0.85s ease-in forwards;
+      pointer-events: none;
+    }
+
+    .film-holes {
+      background-image: radial-gradient(circle, #0a0a0a 55%, transparent 58%);
+      background-size: 18px 28px;
+      background-repeat: repeat-y;
+    }
+
+    .telemetry {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mode-pill {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.35);
+    }
+    .mode-pill.active {
+      border-color: var(--rec);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(255,42,42,0.35);
+      background: rgba(255,42,42,0.15);
+    }
+
+    iframe {
+      background: #000;
+    }
+
+    @media (max-width: 640px) {
+      .hud-corner { width: 28px; height: 28px; }
+      .hud-tl, .hud-tr, .hud-bl, .hud-br { top: auto; }
+      .hud-tl { top: 6px; left: 6px; }
+      .hud-tr { top: 6px; right: 6px; }
+      .hud-bl { bottom: 6px; left: 6px; }
+      .hud-br { bottom: 6px; right: 6px; }
+    }
+  </style>
+</head>
+<body class="font-body antialiased">
+  <div class="shutter-overlay"></div>
+  <div class="hud-corner hud-tl"></div>
+  <div class="hud-corner hud-tr"></div>
+  <div class="hud-corner hud-bl"></div>
+  <div class="hud-corner hud-br"></div>
+  <div class="scanlines"></div>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <!-- Top HUD -->
+  <div class="fixed top-0 inset-x-0 z-50 pointer-events-none px-6 sm:px-10 pt-4 sm:pt-5">
+    <div class="flex items-center justify-between font-hud text-[10px] sm:text-xs tracking-[0.22em] text-gpro-cyan">
+      <div class="flex items-center gap-3">
+        <span class="rec-dot inline-block"></span>
+        <span class="text-gpro-rec font-bold">REC</span>
+        <span class="hidden sm:inline text-white/70">4K60 · WIDE · STABILIZED</span>
+      </div>
+      <div class="hidden md:flex items-center gap-5 text-white/70">
+        <span>SPD <span id="spd" class="text-gpro-yel">64.2</span></span>
+        <span>ALT <span class="text-gpro-lime">11240</span></span>
+        <span>SOL <span class="text-gpro-cyan">MAINNET</span></span>
+      </div>
+      <div class="flex items-center gap-3 text-white/80">
+        <span id="clock" class="telemetry">00:00:00</span>
+        <span class="hidden sm:inline">BAT ████░</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <header class="relative z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20">
+      <nav class="glass-nav rounded-2xl px-3 sm:px-5 py-3 flex items-center justify-between gap-3">
+        <a href="#top" class="flex items-center gap-3 min-w-0">
+          <img src="logo.png" alt="NICK GPRO logo" class="h-11 w-11 sm:h-12 sm:w-12 rounded-full object-cover ring-2 ring-gpro-cyan/70 shadow-cyan" />
+          <div class="leading-none">
+            <div class="font-display text-2xl sm:text-3xl title-glow">NICK <span class="gpro-gradient">GPRO</span></div>
+            <div class="font-hud text-[10px] tracking-[0.3em] text-gpro-cyan/80">$NICKGPRO</div>
+          </div>
+        </a>
+
+        <div class="hidden lg:flex items-center gap-1 font-hud text-[11px] tracking-[0.2em]">
+          <a href="#about" class="px-3 py-2 rounded-lg hover:text-gpro-cyan hover:bg-white/5">ABOUT</a>
+          <a href="#buy" class="px-3 py-2 rounded-lg hover:text-gpro-yel hover:bg-white/5">HOW TO BUY</a>
+          <a href="#chart" class="px-3 py-2 rounded-lg hover:text-gpro-lime hover:bg-white/5">CHART</a>
+          <a href="#crew" class="px-3 py-2 rounded-lg hover:text-gpro-mag hover:bg-white/5">CREW</a>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a href="https://t.me/NICKGPRO" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex h-10 w-10 rounded-full overflow-hidden ring-1 ring-white/20 hover:ring-gpro-cyan hover:scale-105 transition">
+            <img src="tg.png" alt="Telegram" class="h-full w-full object-cover" />
+          </a>
+          <a href="https://x.com/NICKGPRO_x" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex h-10 w-10 rounded-full overflow-hidden bg-black ring-1 ring-white/20 hover:ring-white hover:scale-105 transition">
+            <img src="x.png" alt="X / Twitter" class="h-full w-full object-cover" />
+          </a>
+          <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex items-center gap-2 bg-gpro-rec text-white font-display text-lg px-4 py-2 rounded-full shadow-rec hover:brightness-110 transition">
+            BUY NOW
+          </a>
+          <button id="menuBtn" class="lg:hidden h-10 w-10 rounded-lg border border-white/15 grid place-items-center" aria-label="Open menu">
+            <span class="font-hud text-gpro-cyan">☰</span>
+          </button>
+        </div>
+      </nav>
+
+      <div id="mobileMenu" class="hidden lg:hidden mt-2 glass-nav rounded-2xl p-3 font-hud text-sm tracking-[0.18em]">
+        <a href="#about" class="block px-3 py-3 rounded-lg hover:bg-white/5">ABOUT</a>
+        <a href="#buy" class="block px-3 py-3 rounded-lg hover:bg-white/5">HOW TO BUY</a>
+        <a href="#chart" class="block px-3 py-3 rounded-lg hover:bg-white/5">CHART</a>
+        <a href="#crew" class="block px-3 py-3 rounded-lg hover:bg-white/5">CREW</a>
+        <div class="flex gap-3 px-3 py-3">
+          <a href="https://t.me/NICKGPRO" target="_blank" rel="noopener noreferrer" class="h-10 w-10 rounded-full overflow-hidden ring-1 ring-white/20">
+            <img src="tg.png" alt="Telegram" class="h-full w-full object-cover" />
+          </a>
+          <a href="https://x.com/NICKGPRO_x" target="_blank" rel="noopener noreferrer" class="h-10 w-10 rounded-full overflow-hidden bg-black ring-1 ring-white/20">
+            <img src="x.png" alt="X / Twitter" class="h-full w-full object-cover" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="relative z-10">
+    <!-- HERO -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-8">
+      <div class="relative overflow-hidden rounded-[28px] border border-cyan-400/20 shadow-cyan min-h-[78vh]">
+        <img src="banner.jpg" alt="NICK GPRO action banner" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/25"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+
+        <!-- LCD bezel ticks -->
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 flex gap-2 font-hud text-[10px] tracking-[0.28em] text-white/70">
+          <span class="mode-pill active px-2 py-1 rounded">VIDEO</span>
+          <span class="mode-pill px-2 py-1 rounded hidden sm:inline">PHOTO</span>
+          <span class="mode-pill px-2 py-1 rounded hidden sm:inline">BURST</span>
+          <span class="mode-pill px-2 py-1 rounded">LIVE</span>
+        </div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 px-5 sm:px-10 py-16 sm:py-20">
+          <div class="relative floaty shrink-0">
+            <div class="absolute -inset-2 rounded-full ring-spin blur-[2px] opacity-90"></div>
+            <div class="relative h-44 w-44 sm:h-56 sm:w-56 rounded-full p-[6px] ring-spin">
+              <div class="h-full w-full rounded-full bg-black overflow-hidden">
+                <img src="logo.png" alt="NICK GPRO" class="h-full w-full object-cover" />
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center lg:text-left max-w-2xl">
+            <div class="inline-flex items-center gap-2 font-hud text-[11px] tracking-[0.32em] text-gpro-yel mb-3">
+              <span class="rec-dot"></span> NOW RECORDING ON SOLANA
+            </div>
+            <h1 class="font-display text-6xl sm:text-8xl leading-[0.85] title-glow">
+              NICK <span class="gpro-gradient">GPRO</span>
+            </h1>
+            <p class="font-hud text-gpro-cyan tracking-[0.35em] text-sm sm:text-base mt-2">$NICKGPRO · ACTION MEME COIN</p>
+            <p class="mt-5 text-lg sm:text-2xl font-semibold text-white/90 leading-snug">
+              NICK GPRO brings legendary camera energy, wild memes, and nonstop action to Solana!
+            </p>
+
+            <div class="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-5">
+              <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="shutter-btn h-20 w-20 sm:h-24 sm:w-24 rounded-full grid place-items-center transition duration-200">
+                <span class="font-display text-white text-xl leading-none text-center">BUY<br/>NOW</span>
+              </a>
+              <a href="https://dexscreener.com/solana/TBA" target="_blank" rel="noopener noreferrer" class="chart-btn h-20 w-20 sm:h-24 sm:w-24 rounded-full grid place-items-center transition duration-200">
+                <span class="font-display text-gpro-cyan text-xl leading-none text-center">CHART</span>
+              </a>
+              <div class="text-left font-hud text-[10px] tracking-[0.2em] text-white/60 hidden sm:block">
+                <div>SHUTTER = SWAP</div>
+                <div class="text-gpro-cyan">MODE = LIVE CHART</div>
+              </div>
+            </div>
+
+            <div class="mt-8 ca-chip rounded-2xl px-4 py-3 flex flex-col sm:flex-row items-center gap-3">
+              <div class="font-hud text-[10px] tracking-[0.28em] text-gpro-yel">CONTRACT ADDRESS</div>
+              <code id="caText" class="text-sm sm:text-base font-hud text-white break-all">TBA</code>
+              <button id="copyBtn" class="shrink-0 bg-gpro-yel text-black font-display text-lg px-4 py-1.5 rounded-lg hover:brightness-110 transition">
+                COPY CA
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="mt-6 border-y border-white/10 bg-black/50 overflow-hidden">
+      <div class="marquee-track flex w-[200%] font-display text-2xl sm:text-3xl py-3 text-white/80">
+        <div class="flex gap-8 whitespace-nowrap px-4">
+          <span>NICK GPRO</span><span class="text-gpro-rec">●</span>
+          <span class="gpro-gradient">$NICKGPRO</span><span class="text-gpro-cyan">●</span>
+          <span>LEGENDARY CAMERA ENERGY</span><span class="text-gpro-yel">●</span>
+          <span>WILD MEMES</span><span class="text-gpro-lime">●</span>
+          <span>NONSTOP ACTION</span><span class="text-gpro-mag">●</span>
+          <span>LIVE ON SOLANA</span><span class="text-gpro-org">●</span>
+          <span>PRESS REC</span><span class="text-gpro-blu">●</span>
+          <span>CAPTURE THE CHAOS</span><span class="text-gpro-rec">●</span>
+        </div>
+        <div class="flex gap-8 whitespace-nowrap px-4" aria-hidden="true">
+          <span>NICK GPRO</span><span class="text-gpro-rec">●</span>
+          <span class="gpro-gradient">$NICKGPRO</span><span class="text-gpro-cyan">●</span>
+          <span>LEGENDARY CAMERA ENERGY</span><span class="text-gpro-yel">●</span>
+          <span>WILD MEMES</span><span class="text-gpro-lime">●</span>
+          <span>NONSTOP ACTION</span><span class="text-gpro-mag">●</span>
+          <span>LIVE ON SOLANA</span><span class="text-gpro-org">●</span>
+          <span>PRESS REC</span><span class="text-gpro-blu">●</span>
+          <span>CAPTURE THE CHAOS</span><span class="text-gpro-rec">●</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about" class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <div class="flex items-end justify-between gap-4 mb-8">
+        <div>
+          <p class="font-hud text-[11px] tracking-[0.32em] text-gpro-cyan">CLIP 01 · THE FOOTAGE</p>
+          <h2 class="font-display text-5xl sm:text-6xl mt-1">THE <span class="gpro-gradient">GPRO</span> NARRATIVE</h2>
+        </div>
+        <p class="hidden md:block font-hud text-xs tracking-[0.2em] text-white/50">WIDE LENS · HIGH ENERGY · NO CUTS</p>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-6">
+        <article class="lg:col-span-7 lcd-panel rounded-3xl p-6 sm:p-8">
+          <p class="text-xl sm:text-2xl font-semibold leading-relaxed text-white/90">
+            Point it at the mountain. Point it at the meme. Point it at Solana.
+            <span class="text-gpro-cyan">NICK GPRO</span> is the action-cam spirit of crypto —
+            a always-recording, never-boring ticker that treats every candle like a drop-in.
+          </p>
+          <p class="mt-5 text-lg text-white/70 leading-relaxed">
+            Built for riders, degens, and anyone who thinks a day without footage is a day wasted.
+            $NICKGPRO does not sit on a tripod. It straps to the helmet, hits record, and lets the
+            timeline do the screaming.
+          </p>
+          <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 font-hud text-center">
+            <div class="rounded-xl border border-white/10 bg-black/40 py-4">
+              <div class="text-gpro-mag text-[10px] tracking-[0.25em]">NAME</div>
+              <div class="text-white text-sm mt-1">NICK GPRO</div>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-black/40 py-4">
+              <div class="text-gpro-cyan text-[10px] tracking-[0.25em]">SYMBOL</div>
+              <div class="text-white text-sm mt-1">NICKGPRO</div>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-black/40 py-4">
+              <div class="text-gpro-yel text-[10px] tracking-[0.25em]">CHAIN</div>
+              <div class="text-white text-sm mt-1">SOLANA</div>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-black/40 py-4">
+              <div class="text-gpro-lime text-[10px] tracking-[0.25em]">MODE</div>
+              <div class="text-white text-sm mt-1">ACTION</div>
+            </div>
+          </div>
+        </article>
+
+        <div class="lg:col-span-5 grid gap-4">
+          <div class="lcd-panel rounded-3xl p-5 flex gap-4 items-start">
+            <span class="font-display text-3xl text-gpro-rec">01</span>
+            <div>
+              <h3 class="font-display text-2xl">LEGENDARY CAMERA ENERGY</h3>
+              <p class="text-white/70">That tiny black box that made the whole world look like a stunt reel. We bottled it.</p>
+            </div>
+          </div>
+          <div class="lcd-panel rounded-3xl p-5 flex gap-4 items-start">
+            <span class="font-display text-3xl text-gpro-mag">02</span>
+            <div>
+              <h3 class="font-display text-2xl">WILD MEMES</h3>
+              <p class="text-white/70">Helmet-cam chaos, founder smirk, sunset drops. The timeline is the cutting room.</p>
+            </div>
+          </div>
+          <div class="lcd-panel rounded-3xl p-5 flex gap-4 items-start">
+            <span class="font-display text-3xl text-gpro-cyan">03</span>
+            <div>
+              <h3 class="font-display text-2xl">NONSTOP ACTION</h3>
+              <p class="text-white/70">No pause button. Solana speed, action-sports attitude, community always rolling.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY -->
+    <section id="buy" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div class="flex items-end justify-between gap-4 mb-8">
+        <div>
+          <p class="font-hud text-[11px] tracking-[0.32em] text-gpro-yel">CLIP 02 · SHOT LIST</p>
+          <h2 class="font-display text-5xl sm:text-6xl mt-1">HOW TO <span class="gpro-gradient">BUY</span></h2>
+          <p class="mt-2 text-lg text-white/70 max-w-xl">Four shots. One take. Grab $NICKGPRO on Solana before the roll ends.</p>
+        </div>
+        <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 bg-gpro-rec text-white font-display text-xl px-5 py-2 rounded-full shadow-rec hover:brightness-110">
+          BUY NOW
+        </a>
+      </div>
+
+      <div class="relative lcd-panel rounded-3xl p-4 sm:p-6 overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-6 film-holes opacity-70 hidden md:block"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-6 film-holes opacity-70 hidden md:block"></div>
+
+        <div class="md:px-8 grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <article class="step-card rounded-2xl border border-white/10 bg-black/45 p-5 transition duration-300">
+            <div class="flex items-center justify-between">
+              <span class="font-hud text-[10px] tracking-[0.28em] text-gpro-rec">SHOT 01</span>
+              <span class="h-8 w-8 rounded-full bg-gpro-rec/20 text-gpro-rec grid place-items-center font-display text-xl">1</span>
+            </div>
+            <div class="mt-5 h-14 w-14 rounded-2xl border border-gpro-rec/40 grid place-items-center">
+              <svg viewBox="0 0 48 48" class="h-8 w-8" fill="none" stroke="#FF2A2A" stroke-width="2.2">
+                <rect x="10" y="14" width="28" height="24" rx="4"/>
+                <path d="M16 14v-3h16v3"/>
+                <circle cx="24" cy="26" r="5"/>
+              </svg>
+            </div>
+            <h3 class="font-display text-3xl mt-4">GET A WALLET</h3>
+            <p class="mt-2 text-white/70 leading-relaxed">
+              Download a Solana wallet like Phantom or Solflare. Create your account, lock in the seed phrase, and you are rolling.
+            </p>
+          </article>
+
+          <article class="step-card rounded-2xl border border-white/10 bg-black/45 p-5 transition duration-300">
+            <div class="flex items-center justify-between">
+              <span class="font-hud text-[10px] tracking-[0.28em] text-gpro-mag">SHOT 02</span>
+              <span class="h-8 w-8 rounded-full bg-gpro-mag/20 text-gpro-mag grid place-items-center font-display text-xl">2</span>
+            </div>
+            <div class="mt-5 h-14 w-14 rounded-2xl border border-gpro-mag/40 grid place-items-center">
+              <svg viewBox="0 0 48 48" class="h-8 w-8" fill="none" stroke="#FF2EC4" stroke-width="2.2">
+                <circle cx="24" cy="24" r="14"/>
+                <path d="M24 16v16M19 20h8a3 3 0 010 6h-6a3 3 0 000 6h9"/>
+              </svg>
+            </div>
+            <h3 class="font-display text-3xl mt-4">LOAD SOL</h3>
+            <p class="mt-2 text-white/70 leading-relaxed">
+              Buy SOL on any major exchange, then send it to your Solana wallet. Keep a little extra for network fees.
+            </p>
+          </article>
+
+          <article class="step-card rounded-2xl border border-white/10 bg-black/45 p-5 transition duration-300">
+            <div class="flex items-center justify-between">
+              <span class="font-hud text-[10px] tracking-[0.28em] text-gpro-cyan">SHOT 03</span>
+              <span class="h-8 w-8 rounded-full bg-gpro-cyan/20 text-gpro-cyan grid place-items-center font-display text-xl">3</span>
+            </div>
+            <div class="mt-5 h-14 w-14 rounded-2xl border border-gpro-cyan/40 grid place-items-center">
+              <svg viewBox="0 0 48 48" class="h-8 w-8" fill="none" stroke="#00C8FF" stroke-width="2.2">
+                <path d="M14 18h20l-4-5M34 30H14l4 5"/>
+                <circle cx="18" cy="24" r="3"/><circle cx="30" cy="24" r="3"/>
+              </svg>
+            </div>
+            <h3 class="font-display text-3xl mt-4">OPEN THE SWAP</h3>
+            <p class="mt-2 text-white/70 leading-relaxed">
+              Hit <span class="text-gpro-cyan font-semibold">Buy Now</span> to open pump.fun with SOL as input and $NICKGPRO as output. Connect the wallet.
+            </p>
+          </article>
+
+          <article class="step-card rounded-2xl border border-white/10 bg-black/45 p-5 transition duration-300">
+            <div class="flex items-center justify-between">
+              <span class="font-hud text-[10px] tracking-[0.28em] text-gpro-lime">SHOT 04</span>
+              <span class="h-8 w-8 rounded-full bg-gpro-lime/20 text-gpro-lime grid place-items-center font-display text-xl">4</span>
+            </div>
+            <div class="mt-5 h-14 w-14 rounded-2xl border border-gpro-lime/40 grid place-items-center">
+              <svg viewBox="0 0 48 48" class="h-8 w-8" fill="none" stroke="#3DFF5C" stroke-width="2.2">
+                <circle cx="24" cy="24" r="14"/>
+                <circle cx="24" cy="24" r="6"/>
+                <path d="M24 6v4M24 38v4M6 24h4M38 24h4"/>
+              </svg>
+            </div>
+            <h3 class="font-display text-3xl mt-4">CAPTURE $NICKGPRO</h3>
+            <p class="mt-2 text-white/70 leading-relaxed">
+              Swap SOL for $NICKGPRO, confirm the shot, and you are in the footage. Optional: copy the CA and verify the mint first.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHART -->
+    <section id="chart" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+        <div>
+          <p class="font-hud text-[11px] tracking-[0.32em] text-gpro-lime">CLIP 03 · PLAYBACK</p>
+          <h2 class="font-display text-5xl sm:text-6xl mt-1">LIVE <span class="gpro-gradient">CHART</span></h2>
+          <p class="mt-2 text-lg text-white/70">Watch the action print in real time on Dexscreener.</p>
+        </div>
+        <a href="https://dexscreener.com/solana/TBA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 border border-gpro-cyan text-gpro-cyan font-display text-xl px-5 py-2 rounded-full hover:bg-gpro-cyan hover:text-black transition">
+          OPEN CHART
+        </a>
+      </div>
+
+      <div class="lcd-panel rounded-3xl p-2 sm:p-3">
+        <div class="flex items-center justify-between px-3 py-2 font-hud text-[10px] tracking-[0.24em] text-white/60">
+          <span class="flex items-center gap-2"><span class="rec-dot"></span> LIVE FEED · DEXSCREENER</span>
+          <span class="text-gpro-cyan">SOLANA / $NICKGPRO</span>
+        </div>
+        <div class="overflow-hidden rounded-2xl border border-white/10 bg-black min-h-[420px] h-[62vh]">
+          <iframe
+            title="Dexscreener chart for NICKGPRO"
+            src="https://dexscreener.com/solana/TBA?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+            class="w-full h-full"
+            allow="clipboard-write"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREW -->
+    <section id="crew" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
+      <div class="lcd-panel rounded-3xl overflow-hidden">
+        <div class="grid lg:grid-cols-2">
+          <div class="relative min-h-[280px]">
+            <img src="banner.jpg" alt="Join the NICK GPRO crew" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent lg:to-black/20"></div>
+            <div class="relative p-8 sm:p-10">
+              <p class="font-hud text-[11px] tracking-[0.32em] text-gpro-mag">CLIP 04 · THE CREW</p>
+              <h2 class="font-display text-5xl sm:text-6xl mt-2">JOIN THE <span class="gpro-gradient">ROLL</span></h2>
+              <p class="mt-4 text-lg text-white/80 max-w-md">
+                Telegram for the live feed. X for the highlights. Same energy, no tripod required.
+              </p>
+            </div>
+          </div>
+          <div class="p-8 sm:p-10 flex flex-col justify-center gap-4">
+            <a href="https://t.me/NICKGPRO" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/40 p-4 hover:border-[#2AABEE] hover:bg-[#2AABEE]/10 transition">
+              <img src="tg.png" alt="" class="h-14 w-14 rounded-full" />
+              <div>
+                <div class="font-display text-3xl">TELEGRAM</div>
+                <div class="font-hud text-xs tracking-[0.2em] text-white/60">t.me/NICKGPRO</div>
+              </div>
+            </a>
+            <a href="https://x.com/NICKGPRO_x" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/40 p-4 hover:border-white hover:bg-white/5 transition">
+              <img src="x.png" alt="" class="h-14 w-14 rounded-full object-cover bg-black" />
+              <div>
+                <div class="font-display text-3xl">X / TWITTER</div>
+                <div class="font-hud text-xs tracking-[0.2em] text-white/60">x.com/NICKGPRO_x</div>
+              </div>
+            </a>
+            <div class="flex flex-wrap gap-3 pt-2">
+              <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=TBA" target="_blank" rel="noopener noreferrer" class="flex-1 min-w-[140px] text-center bg-gpro-rec text-white font-display text-2xl py-3 rounded-xl shadow-rec hover:brightness-110">BUY NOW</a>
+              <a href="https://dexscreener.com/solana/TBA" target="_blank" rel="noopener noreferrer" class="flex-1 min-w-[140px] text-center border border-gpro-cyan text-gpro-cyan font-display text-2xl py-3 rounded-xl hover:bg-gpro-cyan hover:text-black transition">CHART</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-10 pb-16">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-6">
+      <div class="flex items-center gap-3">
+        <img src="logo.png" alt="" class="h-9 w-9 rounded-full object-cover" />
+        <div class="font-display text-xl">NICK GPRO <span class="text-white/40">·</span> <span class="gpro-gradient">$NICKGPRO</span></div>
+      </div>
+      <p class="font-hud text-[10px] tracking-[0.18em] text-white/45 text-center sm:text-right max-w-md">
+        $NICKGPRO is a meme coin on Solana. Not financial advice. Film responsibly. DYOR.
+      </p>
+    </div>
+  </footer>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] hidden font-hud tracking-[0.28em] text-xs bg-gpro-yel text-black px-4 py-2 rounded-full shadow-yel">
+    CA COPIED
+  </div>
+
+  <script>
+    const CA = "TBA";
+    const caText = document.getElementById("caText");
+    const copyBtn = document.getElementById("copyBtn");
+    const toast = document.getElementById("toast");
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const clock = document.getElementById("clock");
+    const spd = document.getElementById("spd");
+
+    caText.textContent = CA;
+
+    function showCopied() {
+      copyBtn.textContent = "COPIED";
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        copyBtn.textContent = "COPY CA";
+        toast.classList.add("hidden");
+      }, 1600);
+    }
+
+    function fallbackCopy() {
+      const ta = document.createElement("textarea");
+      ta.value = CA;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      showCopied();
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(CA);
+          showCopied();
+        } else {
+          fallbackCopy();
+        }
+      } catch (err) {
+        fallbackCopy();
+      }
+    });
+
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+    mobileMenu.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+    });
+
+    const start = Date.now();
+    function tick() {
+      const s = Math.floor((Date.now() - start) / 1000);
+      const hh = String(Math.floor(s / 3600)).padStart(2, "0");
+      const mm = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
+      const ss = String(s % 60).padStart(2, "0");
+      clock.textContent = hh + ":" + mm + ":" + ss;
+      if (spd) {
+        const v = (62 + Math.sin(s / 2.2) * 6 + Math.sin(s / 0.7) * 1.4).toFixed(1);
+        spd.textContent = v;
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
